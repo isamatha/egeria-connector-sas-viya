@@ -92,16 +92,62 @@
     ]
   },
   {
-    "sasCat": "dataSet-dataField",
+    "sasCat": "dataSetDataFields",
     "omrs": "SchemaAttributeType",
-    "prefix": "DSDFSAT",
+    "prefix": "CASDSDFSAT",
     "endpointMappings": [
       {
-        "omrs": "usedInSchemas"
+        "omrs": "usedInSchemas",
+        "prefix": "CASTRTT"
+      },
+      {
+        "omrs": "type",
+        "prefix": "CASCRCT"
+      }
+    ]
+  },
+  {
+    "sasCat": "dataSetDataFields",
+    "omrs": "SchemaAttributeType",
+    "prefix": "SASDSDFSAT",
+    "endpointMappings": [
+      {
+        "omrs": "usedInSchemas",
+        "prefix": "SASTRTT"
       },
       {
         "omrs": "type",
         "prefix": "SASCRCT"
+      }
+    ]
+  },
+  {
+    "sasCat": "dataStoreDataSets",
+    "omrs": "SchemaAttributeType",
+    "prefix": "CASDSDSSAT",
+    "endpointMappings": [
+      {
+        "omrs": "usedInSchemas",
+        "prefix": "CASLDS"
+      },
+      {
+        "omrs": "type",
+        "prefix": "CASTRTT"
+      }
+    ]
+  },
+  {
+    "sasCat": "dataStoreDataSets",
+    "omrs": "SchemaAttributeType",
+    "prefix": "SASDSDSSAT",
+    "endpointMappings": [
+      {
+        "omrs": "usedInSchemas",
+        "prefix": "SASLDS"
+      },
+      {
+        "omrs": "type",
+        "prefix": "SASTRTT"
       }
     ]
   },

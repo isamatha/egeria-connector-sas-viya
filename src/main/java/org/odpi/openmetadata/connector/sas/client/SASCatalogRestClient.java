@@ -128,6 +128,8 @@ public class SASCatalogRestClient implements SASCatalogClient {
                 response.close();
                 setAuthToken(username, password);
                 return getInstanceByGuid(guid, type, retries+1);
+            } else if (response.getStatusLine().getStatusCode() != 200) {
+                return null;
             }
 
             HttpEntity entity = response.getEntity();
@@ -327,7 +329,7 @@ public class SASCatalogRestClient implements SASCatalogClient {
 
         Map<String, Object> attributes = (Map<String, Object>) instance.get("attributes");
 
-        instanceInfo.guid = guid;
+        instanceInfo.guid = (String) instance.get("id");
         instanceInfo.addInstanceProperty("instanceType", instance.get("instanceType"));
         instanceInfo.addInstanceProperty("name", instance.get("name"));
         instanceInfo.addInstanceProperty("label", instance.get("label"));

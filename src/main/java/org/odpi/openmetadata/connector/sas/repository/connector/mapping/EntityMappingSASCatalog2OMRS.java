@@ -270,38 +270,41 @@ public class EntityMappingSASCatalog2OMRS {
 
                 // Only include the relationship if we are including all or those that match this type GUID
                 if (relationshipTypeGUID == null || omrsTypeDefGuid.equals(relationshipTypeGUID)) {
+                    log.debug("EntityMappingSASCatalog2OMRS:create relationship mapping");
+                    RelationshipMapping mapping = new RelationshipMapping(
+                            sasRepositoryConnector,
+                            typeDefStore,
+                            null,
+                            new SASCatalogGuid(relationshipGuid, relationshipPrefix),
+                            relationship,
+                            userId);
 
+                    log.debug("EntityMappingSASCatalog2OMRS:get relationship from mapping");
                     try {
-                        RelationshipMapping mapping = new RelationshipMapping(
-                                sasRepositoryConnector,
-                                typeDefStore,
-                                null,
-                                new SASCatalogGuid(relationshipGuid, relationshipPrefix),
-                                relationship,
-                                userId);
-
                         Relationship omrsRelationship = mapping.getRelationship();
                         if (omrsRelationship != null) {
                             omrsRelationships.add(omrsRelationship);
                         }
                     } catch (Exception e) {
-                        raiseRepositoryErrorException(ErrorCode.RELATIONSHIP_NOT_KNOWN, methodName, e, relationshipGuid, methodName, repositoryName);
+                        log.error("Unable to find relationship with guid {} and prefix {}", relationshipGuid, relationshipPrefix);
+                        log.error("Exception Message: {}", e.getMessage());
                     }
-
                 }
             }
         }
 
-        // Now sort the results, if requested
-        Comparator<Relationship> comparator = SequencingUtils.getRelationshipComparator(sequencingOrder, sequencingProperty);
-        if (comparator != null) {
-            omrsRelationships.sort(comparator);
-        }
+        if (omrsRelationships != null) {
+            // Now sort the results, if requested
+            Comparator<Relationship> comparator = SequencingUtils.getRelationshipComparator(sequencingOrder, sequencingProperty);
+            if (comparator != null) {
+                omrsRelationships.sort(comparator);
+            }
 
-        // And finally limit the results, if requested
-        int endOfPageMarker = Math.min(fromRelationshipElement + pageSize, omrsRelationships.size());
-        if (fromRelationshipElement != 0 || endOfPageMarker < omrsRelationships.size()) {
-            omrsRelationships = omrsRelationships.subList(fromRelationshipElement, endOfPageMarker);
+            // And finally limit the results, if requested
+            int endOfPageMarker = Math.min(fromRelationshipElement + pageSize, omrsRelationships.size());
+            if (fromRelationshipElement != 0 || endOfPageMarker < omrsRelationships.size()) {
+                omrsRelationships = omrsRelationships.subList(fromRelationshipElement, endOfPageMarker);
+            }
         }
 
         return (omrsRelationships.isEmpty() ? null : omrsRelationships);
